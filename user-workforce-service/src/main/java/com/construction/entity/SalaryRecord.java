@@ -23,7 +23,7 @@ public class SalaryRecord {
     private Integer month;
     private Integer year;
     private BigDecimal salary;
-
+    private Integer daysPresent;
     private LocalDateTime generatedAt;
 
     @PrePersist
