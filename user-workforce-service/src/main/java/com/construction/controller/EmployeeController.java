@@ -19,7 +19,7 @@ public class EmployeeController {
 
     private  final EmployeeService employeeService;
 
-    @Generated
+    @GetMapping
     public ResponseEntity<List<EmployeeResponse>> getAll(){
         return  ResponseEntity.ok(employeeService.getAll());
     }

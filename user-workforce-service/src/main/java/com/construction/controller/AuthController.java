@@ -24,6 +24,8 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request){
+        System.out.println("Register API called");
+
         User user = authService.register((request));
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
