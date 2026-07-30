@@ -1,5 +1,6 @@
 package com.construction.entity;
 
+import com.construction.dto.request.EmployeeRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+@Entity
 @Table(name="employees")
 @Data @NoArgsConstructor @AllArgsConstructor
 public class Employee {
@@ -24,4 +26,6 @@ public class Employee {
     private String designation;
     private BigDecimal dailyRate;
     private LocalDate joiningDate;
+
+
 }

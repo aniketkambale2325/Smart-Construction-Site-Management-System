@@ -1,0 +1,8 @@
+INSERT INTO roles (role_name)
+VALUES
+('ADMIN'),
+('CONTRACTOR'),
+('SITE_ENGINEER'),
+('SUPERVISOR'),
+('CLIENT')
+ON CONFLICT (role_name) DO NOTHING;
