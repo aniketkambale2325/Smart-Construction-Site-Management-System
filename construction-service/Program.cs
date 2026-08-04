@@ -1,41 +1,118 @@
+using System.Text;
+
+using construction_service.Data;
+using construction_service.Profiles;
+using construction_service.Services;
+using ConstructionService.Services;
+
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+// Database configuration
+builder.Services.AddDbContext<ConstructionDbContext>(
+    options =>
+        options.UseNpgsql(
+            builder.Configuration.GetConnectionString(
+                "DefaultConnection"
+            )
+        )
+);
+
+// JWT configuration
+var jwtSecret =
+    builder.Configuration["Jwt:Secret"];
+
+var key =
+    Encoding.UTF8.GetBytes(jwtSecret!);
+
+builder.Services
+    .AddAuthentication(
+        JwtBearerDefaults.AuthenticationScheme
+    )
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters =
+            new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+
+                IssuerSigningKey =
+                    new SymmetricSecurityKey(key),
+
+                ValidateIssuer = false,
+
+                ValidateAudience = false,
+
+                RoleClaimType = "role"
+            };
+    });
+
+
+// Authorization policies
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy(
+        "AdminOrContractor",
+        policy =>
+            policy.RequireRole(
+                "ADMIN",
+                "CONTRACTOR"
+            )
+    );
+
+    options.AddPolicy(
+        "AnyAuthenticated",
+        policy =>
+            policy.RequireAuthenticatedUser()
+    );
+});
+
+
+// AutoMapper
+builder.Services.AddAutoMapper(
+    typeof(MappingProfile)
+);
+
+
+// Java service communication
+builder.Services.AddHttpClient<EmployeeValidationClient>(client =>
+{
+    client.BaseAddress = new Uri(
+        builder.Configuration[
+            "Services:JavaServiceBaseUrl"
+        ]!
+    );
+});
+
+
+// Register Services
+builder.Services.AddScoped<IProjectService, ProjectService>();
+
+builder.Services.AddScoped<ISiteService, SiteService>();
+
+builder.Services.AddScoped<IDailyReportService, DailyReportService>();
+
+builder.Services.AddScoped<IClientService, ClientService>();
+
+
+// Controllers
+builder.Services.AddControllers();
+
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
 
-app.UseHttpsRedirection();
+// Authentication and authorization
+app.UseAuthentication();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+app.UseAuthorization();
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+
+// Map controller routes
+app.MapControllers();
+
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
