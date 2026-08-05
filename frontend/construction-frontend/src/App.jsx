@@ -3,7 +3,7 @@ import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import AppLayout from "./components/layout/AppLayout";
 
-import Login from "./pages/auth/Login";
+import Login from "./pages/auth/LoginPage";
 import EmployeeList from "./pages/employees/EmployeeList";
 import EmployeeForm from "./pages/employees/EmployeeForm";
 import AttendanceScreen from "./pages/attendance/AttendanceScreen";
