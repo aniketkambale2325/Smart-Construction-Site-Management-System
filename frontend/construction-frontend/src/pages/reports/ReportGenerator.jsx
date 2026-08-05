@@ -10,6 +10,7 @@ export default function ReportGenerator() {
     const [siteName, setSiteName] = useState("");
     const [percentComplete, setPercentComplete] = useState(0);
     const [pdfUrl, setPdfUrl] = useState(null);
+    const [description, setDescription] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 

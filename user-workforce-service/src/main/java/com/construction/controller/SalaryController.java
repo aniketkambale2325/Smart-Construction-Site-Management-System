@@ -23,7 +23,7 @@ public class SalaryController {
 
     private final SalaryRecordService salaryService;
 
-    @PostMapping
+    @PostMapping("/generate/{employeeId}")
     public ResponseEntity<SalaryRecordResponce> generateSalaryRecords(@PathVariable Long employeeId, @Valid @RequestBody SalaryGenerateRequest request){
         return ResponseEntity.ok(salaryService.generateSalaryRecord(employeeId, request));
 

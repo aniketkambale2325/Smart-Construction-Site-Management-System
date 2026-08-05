@@ -1,4 +1,4 @@
-import { dotnetApi } from "./axiosInstances";
+import { dotnetApi } from "./axiosInstance";
 
 export const getExpensesByProject = (projectId) =>
   dotnetApi.get(`/expenses/by-project/${projectId}`).then((res) => res.data);

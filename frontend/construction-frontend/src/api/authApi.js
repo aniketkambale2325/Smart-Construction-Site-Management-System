@@ -5,7 +5,11 @@ export async function loginRequest(username, password){
     return response.data;
 }
 
-export async function registerRequest(username, email, password,roleId){
-    const response = await javaApi.post('/auth/register', {username, email, password});
+export async function registerRequest(username, email, password, roleId) {
+    const response = await javaApi.post('/auth/register', { username, email, password, roleId });
     return response.data;
+}
+
+export async function register({ username, email, password, roleId }) {
+    return registerRequest(username, email, password, roleId);
 }

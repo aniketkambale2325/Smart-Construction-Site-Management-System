@@ -8,4 +8,5 @@ public interface IMaterialService
     Task<List<MaterialResponse>> GetLowStockAsync();
     Task<MaterialRequestResponse> RequestMaterialAsync(MaterialRequestCreateDto request);
     Task<MaterialRequestResponse?> UpdateRequestStatusAsync(int requestId, string status);
+    Task Delete(int id);
 }

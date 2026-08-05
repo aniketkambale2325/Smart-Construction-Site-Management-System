@@ -1,4 +1,4 @@
-import { dotnetApi } from './axiosInstances';
+import { dotnetApi } from './axiosInstance';
 
 export async function getAllProjects() {
   const response = await dotnetApi.get('/projects');
@@ -21,4 +21,13 @@ export async function getProjectById(id) {
   );
 
   return response.data;
+}
+
+export async function updateProject(id, projectData) {
+  const response = await dotnetApi.put(`/projects/${id}`, projectData);
+  return response.data;
+}
+
+export async function deleteProject(id) {
+  await dotnetApi.delete(`/projects/${id}`);
 }

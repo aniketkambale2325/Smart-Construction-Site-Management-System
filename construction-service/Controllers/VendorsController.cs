@@ -26,4 +26,18 @@ public class VendorsController : ControllerBase
     //[Authorize(Roles = "ADMIN,CONTRACTOR")]
     public async Task<ActionResult<VendorResponse>> Create(VendorRequest request)
         => Ok(await _vendorService.CreateAsync(request));
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        try
+        {
+            await _vendorService.Delete(id);
+            return NoContent();
+        }
+        catch (KeyNotFoundException)
+        {
+            return NotFound();
+        }
+    }
 }

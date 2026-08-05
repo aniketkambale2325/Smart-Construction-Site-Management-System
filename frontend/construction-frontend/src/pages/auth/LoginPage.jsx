@@ -1,6 +1,7 @@
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {useAuth} from "../../context/AuthContext.jsx";
+import {useAuth} from "../../context/AuthContext";
+import { Link } from "react-router-dom";
 
 export  default function LoginPage(){
     const [username, setUsername] = useState('');
@@ -18,7 +19,7 @@ export  default function LoginPage(){
 
         try {
             await login(username, password);
-            navigate('/projects');
+            navigate('/dashboard');
         }
         catch (err){
             setError('Invalid username ot password');
@@ -42,6 +43,14 @@ export  default function LoginPage(){
                 className="w-full border rounded px-3 py-2 mb-4" required
             />
 
+            <label className="block mb-2 text-sm font-medium">Password</label>
+            <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full border rounded px-3 py-2 mb-4" required
+            />
+
             <button type="submit"
             disabled={loading}
             className="w-full bg-emerald-700 text-white py-2 rounded font-medium"
@@ -50,6 +59,10 @@ export  default function LoginPage(){
                 {loading ? 'Logging in...' : 'Log In'}
 
             </button>
+                <p className="text-sm text-center mt-4 text-gray-500">
+                     Don't have an account?{" "}
+                <Link to="/register" className="text-teal-700 underline">Register</Link>
+                </p>
             </form>
            </div>
 

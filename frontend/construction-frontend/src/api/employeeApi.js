@@ -19,3 +19,7 @@ export async function updateEmployee(id, employeeData){
     const response = await javaApi.put(`/employees/${id}`,employeeData);
     return response.data;
 }
+
+export async function deleteEmployee(id) {
+    await javaApi.delete(`/employees/${id}`);
+}

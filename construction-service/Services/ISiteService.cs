@@ -22,4 +22,6 @@ public interface ISiteService
             int siteId,
             int employeeId
         );
+
+    Task Delete(int id);
 }

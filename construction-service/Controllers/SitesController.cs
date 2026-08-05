@@ -20,10 +20,10 @@ public class SitesController: ControllerBase
     private readonly IPhotoUploadService _photoUploadService;
 
 
-    public SitesController( ISiteService siteService)
+    public SitesController(ISiteService siteService, IPhotoUploadService photoUploadService)
     {
-        _siteService =
-            siteService;
+        _siteService = siteService;
+        _photoUploadService = photoUploadService;
     }
 
 
@@ -83,9 +83,7 @@ public class SitesController: ControllerBase
     }
 
 
-    [HttpGet(
-        "/by-project/{projectId}"
-    )]
+    [HttpGet("by-project/{projectId}")]
 
     public async Task<
         ActionResult<
@@ -110,6 +108,20 @@ public class SitesController: ControllerBase
     {
         var url = await _photoUploadService.UploadAsync(siteId, file);
         return Ok(new { url });
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        try
+        {
+            await _siteService.Delete(id);
+            return NoContent();
+        }
+        catch (KeyNotFoundException)
+        {
+            return NotFound();
+        }
     }
 
 }

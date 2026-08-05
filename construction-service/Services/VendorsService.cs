@@ -33,4 +33,14 @@ public class VendorService : IVendorService
         await _context.SaveChangesAsync();
         return new VendorResponse(vendor.Id, vendor.Name, vendor.ContactNumber, vendor.MaterialSupplied);
     }
+
+    public async Task Delete(int id)
+    {
+        var vendor = await _context.Vendors.FindAsync(id);
+        if (vendor is null)
+            throw new KeyNotFoundException("Vendor not found");
+
+        _context.Vendors.Remove(vendor);
+        await _context.SaveChangesAsync();
+    }
 }

@@ -2,30 +2,29 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { markAttendance, getAttendanceHistory } from "../../api/attendanceApi";
 
-
-
 export default function AttendancePage() {
-    const{employeeId} = useParams();
-    const [history, setHistory] = useState([]);
-    const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
-    const [status, setStatus] = useState("PRESENT");
+  const { employeeId } = useParams();
+  const [history, setHistory] = useState([]);
+  const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
+  const [status, setStatus] = useState("PRESENT");
 
-    const loadHistory =() =>{
-        getAttendanceHistory(employeeId).then(setHistory);
-    }
-    useEffect(()=>{
-        loadHistroy();
-    },[employeeId]);
+  const loadHistory = () => {
+    getAttendanceHistory(employeeId).then(setHistory);
+  };
 
-    const handleMark = async () => {
-        e.preventDefault();
-        await markAttendance({employeeId : number(employeeId), date, status }); 
-        loadHistory();
-    };
+  useEffect(() => {
+    loadHistory();
+  }, [employeeId]);
 
-    return(
-        <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Attendance -- Employee #{employeeId}</h1>
+  const handleMark = async (e) => {
+    e.preventDefault();
+    await markAttendance(Number(employeeId), date, status);
+    loadHistory();
+  };
+
+  return (
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-4">Attendance — Employee #{employeeId}</h1>
 
       <form onSubmit={handleMark} className="bg-white shadow rounded p-4 mb-6 flex gap-3 items-end">
         <div>
@@ -64,9 +63,5 @@ export default function AttendancePage() {
         </tbody>
       </table>
     </div>
-
-    )
-
-
-
+  );
 }

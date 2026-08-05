@@ -5,4 +5,5 @@ public interface IVendorService
 {
     Task<List<VendorResponse>> GetAllAsync();
     Task<VendorResponse> CreateAsync(VendorRequest request);
+    Task Delete(int id);
 }
