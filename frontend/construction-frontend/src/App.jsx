@@ -14,6 +14,14 @@ import SiteList from "./pages/sites/SiteList";
 import SiteForm from "./pages/sites/SiteForm";
 import DailyReportForm from "./pages/sites/DailyReportForm";
 
+import MaterialList from "./pages/materials/MaterialList";
+import VendorList from "./pages/vendors/VendorList";
+import ExpenseList from "./pages/expenses/ExpenseList";
+import ClientList from "./pages/clients/ClientList";
+import Dashboard from "./pages/dashboard/Dashboard";
+import ReportGenerator from "./pages/reports/ReportGenerator";
+
+
 export default function App() {
   return (
     <AuthProvider>
@@ -41,6 +49,16 @@ export default function App() {
             <Route path="projects/:projectId/sites" element={<SiteList />} />
             <Route path="projects/:projectId/sites/new" element={<SiteForm />} />
             <Route path="sites/:siteId/daily-reports" element={<DailyReportForm />} />
+
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="materials" element={<MaterialList />} />
+            <Route path="vendors" element={<VendorList />} />
+            <Route path="clients" element={<ClientList />} />
+            <Route path="projects/:projectId/expenses" element={<ExpenseList />} />
+            <Route path="sites/:siteId/reports" element={<ReportGenerator />} />
+
+
+
           </Route>
         </Routes>
       </BrowserRouter>
