@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import {BarChart, Bar, Xaxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,PieChart, Pie, Cell, Legend} from "recharts";
+import {BarChart, Bar, Xaxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,PieChart, Pie, Cell} from "recharts";
 import { getDashboardSummary, getProjectProgressChart, getExpenseByCategoryChart } from "../../api/dashboardApi";
 
 const COLORS = ["#0F6E56", "#1F7A8C", "#D97706", "#6B4FBB", "#C2543E"];
