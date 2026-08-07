@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-// import ProtectedRoute from "./ProtectedRoute.jsx";
+import ProtectedRoute from "./ProtectedRoute.jsx";
 import Home from "../pages/home/Home.jsx";
 import LoginPage from "../pages/auth/LoginPage.jsx";
 import Register from "../pages/auth/Register.jsx";
@@ -33,7 +33,14 @@ export default function AppRoutes() {
       <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<Register />} />
 
-      <Route path="/dashboard" element={<DashboardLayout />}>
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <DashboardLayout />
+          </ProtectedRoute>
+        }
+      >
         <Route index element={<Dashboard />} />
         <Route path="employees" element={<EmployeeListPage />} />
         <Route path="employees/new" element={<EmployeeFormPage />} />

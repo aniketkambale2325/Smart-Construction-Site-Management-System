@@ -42,7 +42,7 @@ export default function SalaryPage(){
       {result && (
         <div className="bg-white shadow rounded p-4">
           <p>Days Present: <strong>{result.daysPresent}</strong></p>
-          <p>Amount: <strong>₹{result.amount}</strong></p>
+          <p>Amount: <strong>₹{result.salary}</strong></p>
         </div>
       )}
     </div>

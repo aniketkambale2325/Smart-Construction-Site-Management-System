@@ -1,10 +1,15 @@
 import { createContext, useContext, useState, type ReactNode } from "react";
 import { loginRequest } from "../api/authApi.js";
+import {
+  clearAuthStorage,
+  getUsernameFromToken,
+} from "../utils/authStorage.js";
 
 interface User {
   token: string;
   role: string;
   userId: string;
+  username: string;
 }
 
 interface AuthContextValue {
@@ -20,7 +25,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
     const userId = localStorage.getItem("userId");
-    return token && role && userId ? { token, role, userId } : null;
+    if (!token || !role || !userId) {
+      return null;
+    }
+
+    const storedUsername =
+      localStorage.getItem("username") ?? getUsernameFromToken(token) ?? "";
+
+    return {
+      token,
+      role,
+      userId: String(userId),
+      username: storedUsername,
+    };
   });
 
   const login = async (username: string, password: string) => {
@@ -28,14 +45,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.setItem("token", data.token);
     localStorage.setItem("refreshToken", data.refreshToken);
     localStorage.setItem("role", data.role);
-    localStorage.setItem("userId", data.userId);
-    setUser({ token: data.token, role: data.role, userId: data.userId });
+    localStorage.setItem("userId", String(data.userId));
+    localStorage.setItem("username", username);
+    setUser({
+      token: data.token,
+      role: data.role,
+      userId: String(data.userId),
+      username,
+    });
     return data;
   };
 
   const logout = () => {
-    localStorage.clear();
+    clearAuthStorage();
     setUser(null);
+    window.location.href = "/login";
   };
 
   return (

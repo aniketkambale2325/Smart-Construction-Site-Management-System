@@ -137,6 +137,7 @@ import { ChevronDown, ChevronRight } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { navItems } from "@/data/dashboard";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/context/AuthContext";
 
 
 interface SidebarProps {
@@ -148,56 +149,21 @@ interface SidebarProps {
 export default function Sidebar({ open, onClose }: SidebarProps) {
 
   const location = useLocation();
+  const { user } = useAuth();
 
+  const displayName = user?.username || "User";
+  const roleLabel = user?.role || "USER";
 
   const [expanded, setExpanded] = useState<Record<string, boolean>>({
     Dashboard: true,
   });
 
-  let user = {
-    username: "User",
-    email: "user@gmail.com",
-    role: "USER"
-  };
-
-
-  const storedUser = localStorage.getItem("user");
-
-
-  if (storedUser) {
-
-    try {
-
-      user = {
-        ...user,
-        ...JSON.parse(storedUser)
-      };
-
-    }
-    catch (error) {
-
-      console.error(
-        "Invalid user data in localStorage",
-        error
-      );
-
-    }
-
-  }
-  const displayName =
-    user.username ||
-    "User";
-
   const toggleSection = (label: string) => {
-
     setExpanded((prev) => ({
       ...prev,
-      [label]: !prev[label]
+      [label]: !prev[label],
     }));
-
   };
-
-
 
   const isActive = (href?: string) =>
     href && location.pathname === href;
@@ -439,7 +405,7 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
               <p className="truncate text-xs text-gray-500">
 
 
-                {user.email}
+                Role: {roleLabel}
 
 
               </p>

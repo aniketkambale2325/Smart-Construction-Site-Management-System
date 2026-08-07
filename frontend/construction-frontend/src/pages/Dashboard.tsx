@@ -16,8 +16,13 @@ import {
   projectProgress,
   quickActions,
 } from "@/data/dashboard";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Dashboard() {
+  const { user } = useAuth();
+  const displayName = user?.username || "User";
+  const roleLabel = user?.role || "—";
+
   return (
     <div className="animate-fade-in space-y-6">
       <div>
@@ -29,7 +34,9 @@ export default function Dashboard() {
         <h1 className="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">
           Dashboard
         </h1>
-        <p className="mt-1 text-gray-500">Welcome back</p>
+        <p className="mt-1 text-gray-500">
+          Welcome, {displayName} · Role: {roleLabel}
+        </p>
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">

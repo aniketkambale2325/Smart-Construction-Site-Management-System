@@ -11,7 +11,8 @@ interface NavbarProps {
 export default function Navbar({ onMenuClick }: NavbarProps) {
   const { user, logout } = useAuth();
 
-  const initials = user?.role?.slice(0, 2).toUpperCase() ?? "AU";
+  const displayName = user?.username || "User";
+  const initials = displayName.slice(0, 2).toUpperCase();
 
   return (
     <header className="sticky top-0 z-30 flex h-[72px] items-center justify-between border-b border-gray-200 bg-white px-4 shadow-sm lg:px-6">
@@ -68,9 +69,9 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
           </Avatar>
           <div className="hidden lg:block">
             <p className="text-sm font-semibold text-gray-900">
-              Admin User
+              Welcome, {displayName}
             </p>
-            <p className="text-xs text-gray-500">admin@example.com</p>
+            <p className="text-xs text-gray-500">Role: {user?.role ?? "—"}</p>
           </div>
         </div>
 

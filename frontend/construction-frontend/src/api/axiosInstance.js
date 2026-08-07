@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { clearAuthStorage } from '../utils/authStorage.js';
 
 export const javaApi = axios.create({
   baseURL: 'http://localhost:8080/api',
@@ -25,8 +26,7 @@ export const pythonApi = axios.create({
     (response) => response,
     (error) => {
       if (error.response && error.response.status === 401) {
-        localStorage.removeItem('token');
-        localStorage.removeItem('role');
+        clearAuthStorage();
         window.location.href = '/login';
       }
       return Promise.reject(error);
