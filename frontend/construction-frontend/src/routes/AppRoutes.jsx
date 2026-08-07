@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom";
-import ProtectedRoute from "./ProtectedRoute.jsx";
+// import ProtectedRoute from "./ProtectedRoute.jsx";
+import Home from "../pages/home/Home.jsx";
 import LoginPage from "../pages/auth/LoginPage.jsx";
 import Register from "../pages/auth/Register.jsx";
 import EmployeeListPage from "../pages/employees/EmployeeListPage.jsx";
@@ -18,21 +19,21 @@ import VendorList from "../pages/vendors/VendorList.jsx";
 import ClientList from "../pages/clients/ClientList.jsx";
 import ExpenseList from "../pages/expenses/ExpensesList.jsx";
 import ReportGenerator from "../pages/reports/ReportGenerator.jsx";
+import About from "../pages/home/About.jsx";
+import Contact from "../pages/home/Contact.jsx";
+import Navigationbar from "../pages/home/Navigationbar.jsx";
 
 export default function AppRoutes() {
   return (
     <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/navbar" element={<Navigationbar />} />
+      <Route path="/about" element={<About />} /> 
+      <Route path="/contact" element={<Contact />} />
       <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<Register />} />
 
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute>
-            <DashboardLayout />
-          </ProtectedRoute>
-        }
-      >
+      <Route path="/dashboard" element={<DashboardLayout />}>
         <Route index element={<Dashboard />} />
         <Route path="employees" element={<EmployeeListPage />} />
         <Route path="employees/new" element={<EmployeeFormPage />} />
