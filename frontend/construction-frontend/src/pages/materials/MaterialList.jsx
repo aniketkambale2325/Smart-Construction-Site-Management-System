@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
-import { getMaterials, createMaterial } from "../../api/materialApi";
+import { getMaterials, createMaterial, deleteMaterial } from "../../api/materialApi";
+import ConfirmDialog from "../../components/ConfirmDialog";
 
 export default function MaterialList() {
   const [materials, setMaterials] = useState([]);
   const [form, setForm] = useState({ name: "", unit: "", quantityAvailable: "", reorderLevel: "" });
   const [showForm, setShowForm] = useState(false);
+  const [error, setError] = useState("");
+  const [deleteTarget, setDeleteTarget] = useState(null);
+  const [deleting, setDeleting] = useState(false);
 
   const loadMaterials = () => getMaterials().then(setMaterials);
 
@@ -14,18 +18,37 @@ export default function MaterialList() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await createMaterial({
-      ...form,
-      quantityAvailable: Number(form.quantityAvailable),
-      reorderLevel: Number(form.reorderLevel),
-    });
-    setForm({ name: "", unit: "", quantityAvailable: "", reorderLevel: "" });
-    setShowForm(false);
-    loadMaterials();
+    try {
+      await createMaterial({
+        ...form,
+        quantityAvailable: Number(form.quantityAvailable),
+        reorderLevel: Number(form.reorderLevel),
+      });
+      setForm({ name: "", unit: "", quantityAvailable: "", reorderLevel: "" });
+      setShowForm(false);
+      loadMaterials();
+    } catch {
+      setError("Failed to save material");
+    }
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!deleteTarget || deleting) return;
+    setDeleting(true);
+    try {
+      await deleteMaterial(deleteTarget.id);
+      setMaterials((prev) => prev.filter((m) => m.id !== deleteTarget.id));
+      setDeleteTarget(null);
+    } catch {
+      setError("Failed to delete material");
+    } finally {
+      setDeleting(false);
+    }
   };
 
   return (
     <div className="p-6">
+      {error && <p className="mb-4 text-red-600">{error}</p>}
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">Materials</h1>
         <button onClick={() => setShowForm(!showForm)} className="bg-teal-700 text-white px-4 py-2 rounded">
@@ -51,6 +74,7 @@ export default function MaterialList() {
             <th className="p-3">Available</th>
             <th className="p-3">Reorder Level</th>
             <th className="p-3">Status</th>
+            <th className="p-3">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -67,10 +91,26 @@ export default function MaterialList() {
                   <span className="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-medium">OK</span>
                 )}
               </td>
+              <td className="p-3">
+                <button
+                  type="button"
+                  onClick={() => setDeleteTarget(m)}
+                  className="rounded bg-red-600 px-3 py-1 text-sm text-white hover:bg-red-700"
+                >
+                  Delete
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      <ConfirmDialog
+        open={Boolean(deleteTarget)}
+        onCancel={() => !deleting && setDeleteTarget(null)}
+        onConfirm={handleDeleteConfirm}
+        loading={deleting}
+      />
     </div>
   );
 }

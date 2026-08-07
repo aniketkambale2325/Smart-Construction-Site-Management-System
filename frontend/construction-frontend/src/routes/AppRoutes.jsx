@@ -22,7 +22,6 @@ import ReportGenerator from "../pages/reports/ReportGenerator.jsx";
 import About from "../pages/home/About.jsx";
 import Contact from "../pages/home/Contact.jsx";
 import Navigationbar from "../pages/home/Navigationbar.jsx";
-import Navbar from "@/components/Navbar.js";
 
 export default function AppRoutes() {
   return (
@@ -35,36 +34,28 @@ export default function AppRoutes() {
       <Route path="/register" element={<Register />} />
 
       <Route
-        path="/dashboard"
         element={
           <ProtectedRoute>
             <DashboardLayout />
           </ProtectedRoute>
         }
-      ></Route>
-
- 
-
-      <Route path="/dashboard" element={<DashboardLayout />}>
-        <Route path="navbar" element={<Navbar />} />
-
-        <Route index element={<Dashboard />} />
-        <Route path="employees" element={<EmployeeListPage />} />
-        <Route path="employees/new" element={<EmployeeFormPage />} />
-        <Route path="employees/:id/edit" element={<EmployeeFormPage />} />
-        <Route path="attendance/:employeeId" element={<AttendancePage />} />
-        <Route path="salary/:employeeId" element={<SalaryPage />} />
-        <Route path="projects" element={<ProjectListPage />} />
-        <Route path="projects/new" element={<ProjectFormPage />} />
-        <Route path="projects/:projectId/sites" element={<SiteListPage />} />
-        <Route path="projects/:projectId/sites/new" element={<SiteFormPage />} />
-        <Route path="sites/:siteId/daily-reports" element={<DailyReportFormPage />} />
-        <Route path="dashboard" element={<Dashboard />} />
-        <Route path="materials" element={<MaterialList />} />
-        <Route path="vendors" element={<VendorList />} />
-        <Route path="clients" element={<ClientList />} />
-        <Route path="projects/:projectId/expenses" element={<ExpenseList />} />
-        <Route path="sites/:siteId/reports" element={<ReportGenerator />} />
+      >
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/employees" element={<EmployeeListPage />} />
+        <Route path="/employees/new" element={<EmployeeFormPage />} />
+        <Route path="/employees/:id/edit" element={<EmployeeFormPage />} />
+        <Route path="/attendance/:employeeId" element={<AttendancePage />} />
+        <Route path="/salary/:employeeId" element={<SalaryPage />} />
+        <Route path="/projects" element={<ProjectListPage />} />
+        <Route path="/projects/new" element={<ProjectFormPage />} />
+        <Route path="/projects/:projectId/sites" element={<SiteListPage />} />
+        <Route path="/projects/:projectId/sites/new" element={<SiteFormPage />} />
+        <Route path="/sites/:siteId/daily-reports" element={<DailyReportFormPage />} />
+        <Route path="/materials" element={<MaterialList />} />
+        <Route path="/vendors" element={<VendorList />} />
+        <Route path="/clients" element={<ClientList />} />
+        <Route path="/projects/:projectId/expenses" element={<ExpenseList />} />
+        <Route path="/sites/:siteId/reports" element={<ReportGenerator />} />
       </Route>
     </Routes>
   );

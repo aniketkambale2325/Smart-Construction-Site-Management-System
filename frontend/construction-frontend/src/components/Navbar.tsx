@@ -15,7 +15,7 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
   const initials = displayName.slice(0, 2).toUpperCase();
 
   return (
-    <header className="sticky top-0 z-30 flex h-18 items-center justify-between border-b border-gray-200 bg-white px-4 shadow-sm lg:px-6">
+    <header className="sticky top-0 z-30 flex h-[72px] items-center justify-between border-b border-gray-200 bg-white px-4 shadow-sm lg:px-6">
       <div className="flex flex-1 items-center gap-3 lg:gap-4">
         <Button
           variant="ghost"
