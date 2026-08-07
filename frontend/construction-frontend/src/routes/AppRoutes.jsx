@@ -37,6 +37,7 @@ export default function AppRoutes() {
         <Route index element={<Dashboard />} />
         <Route path="employees" element={<EmployeeListPage />} />
         <Route path="employees/new" element={<EmployeeFormPage />} />
+        <Route path="employees/:id/edit" element={<EmployeeFormPage />} />
         <Route path="attendance/:employeeId" element={<AttendancePage />} />
         <Route path="salary/:employeeId" element={<SalaryPage />} />
         <Route path="projects" element={<ProjectListPage />} />
