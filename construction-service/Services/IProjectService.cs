@@ -18,4 +18,6 @@ public interface IProjectService
         int id,
         ProjectUpdateRequest request
     );
+
+    Task Delete(int id);
 }

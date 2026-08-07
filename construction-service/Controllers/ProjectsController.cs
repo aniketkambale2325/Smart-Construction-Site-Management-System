@@ -68,4 +68,18 @@ public class ProjectsController : ControllerBase
             ? NotFound()
             : Ok(result);
     }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        try
+        {
+            await _service.Delete(id);
+            return NoContent();
+        }
+        catch (KeyNotFoundException)
+        {
+            return NotFound();
+        }
+    }
 }

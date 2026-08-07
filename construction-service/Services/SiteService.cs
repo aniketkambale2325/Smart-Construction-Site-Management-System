@@ -131,6 +131,25 @@ public class SiteService : ISiteService
         return ToResponse(site);
     }
 
+    public async Task Delete(int id)
+    {
+        var site =
+            await _context.Sites
+                .FindAsync(id);
+
+        if (site is null)
+        {
+            throw new KeyNotFoundException(
+                "Site not found"
+            );
+        }
+
+        _context.Sites.Remove(site);
+
+        await _context
+            .SaveChangesAsync();
+    }
+
 
     private static
         SiteResponse ToResponse(

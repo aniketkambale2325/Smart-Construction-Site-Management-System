@@ -1,5 +1,6 @@
 using construction_service.DTOs;
 using construction_service.Services;
+using ConstructionService.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,29 +14,22 @@ namespace construction_service.Controllers;
 
 //[Authorize]
 
-public class SitesController
-    : ControllerBase
+public class SitesController: ControllerBase
 {
-    private readonly
-        ISiteService _siteService;
+    private readonly ISiteService _siteService;
+    private readonly IPhotoUploadService _photoUploadService;
 
 
-    public SitesController(
-        ISiteService siteService
-    )
+    public SitesController(ISiteService siteService, IPhotoUploadService photoUploadService)
     {
-        _siteService =
-            siteService;
+        _siteService = siteService;
+        _photoUploadService = photoUploadService;
     }
 
 
     [HttpPost]
-
     //[Authorize( Roles = "ADMIN,CONTRACTOR")]
-
-    public async Task<
-        ActionResult<SiteResponse>
-    > Create(
+    public async Task< ActionResult<SiteResponse>> Create(
         SiteRequest request
     )
     {
@@ -89,9 +83,7 @@ public class SitesController
     }
 
 
-    [HttpGet(
-        "/by-project/{projectId}"
-    )]
+    [HttpGet("by-project/{projectId}")]
 
     public async Task<
         ActionResult<
@@ -108,4 +100,28 @@ public class SitesController
                 )
         );
     }
+
+
+    [HttpPost("{siteId}/daily-reports/upload-photo")]
+    [Authorize(Roles = "SITE_ENGINEER,SUPERVISOR,ADMIN,CONTRACTOR")]
+    public async Task<IActionResult> UploadPhoto(int siteId, IFormFile file)
+    {
+        var url = await _photoUploadService.UploadAsync(siteId, file);
+        return Ok(new { url });
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        try
+        {
+            await _siteService.Delete(id);
+            return NoContent();
+        }
+        catch (KeyNotFoundException)
+        {
+            return NotFound();
+        }
+    }
+
 }

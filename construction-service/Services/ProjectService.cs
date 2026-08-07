@@ -97,5 +97,20 @@ public class ProjectService : IProjectService
         );
     }
 
+    public async Task Delete(int id)
+    {
+        var project =
+            await _db.Projects.FindAsync(id);
+
+        if (project is null)
+        {
+            throw new KeyNotFoundException("Project not found");
+        }
+
+        _db.Projects.Remove(project);
+
+        await _db.SaveChangesAsync();
+    }
+
 
 }

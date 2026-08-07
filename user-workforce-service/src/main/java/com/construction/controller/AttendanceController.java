@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/attendance")
+@RequestMapping("/api/attendance")
 @RequiredArgsConstructor
 public class AttendanceController {
 
@@ -25,7 +25,7 @@ public class AttendanceController {
         return ResponseEntity.ok(attendanceService.markAttendance(request, markedBy));
     }
 
-    @GetMapping
+    @GetMapping("/{employeeId}")
     public ResponseEntity<List<AttendanceResponce>> getAttendanceHistory(@PathVariable Long employeeId){
         return ResponseEntity.ok(attendanceService.getHistory(employeeId));
     }

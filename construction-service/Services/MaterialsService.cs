@@ -84,6 +84,15 @@ public class MaterialService : IMaterialService
         return ToRequestResponse(request);
     }
 
+    public async Task Delete(int id)
+    {
+        var material = await _context.Materials.FindAsync(id)
+            ?? throw new KeyNotFoundException("Material not found");
+
+        _context.Materials.Remove(material);
+        await _context.SaveChangesAsync();
+    }
+
     private static MaterialResponse ToResponse(Material m) =>
         new(m.Id, m.Name, m.Unit, m.QuantityAvailable, m.ReorderLevel,
             IsLowStock: m.QuantityAvailable <= m.ReorderLevel);

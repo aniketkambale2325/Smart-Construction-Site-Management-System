@@ -1,0 +1,35 @@
+import axios from 'axios';
+import { clearAuthStorage } from '../utils/authStorage.js';
+
+export const javaApi = axios.create({
+  baseURL: 'http://localhost:8080/api',
+});
+
+export const dotnetApi = axios.create({
+  baseURL: 'http://localhost:8081/api',
+});
+
+export const pythonApi = axios.create({
+  baseURL: 'http://localhost:8082/api',
+});
+
+[javaApi, dotnetApi, pythonApi].forEach((instance) => {
+  instance.interceptors.request.use((config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  });
+
+  instance.interceptors.response.use(
+    (response) => response,
+    (error) => {
+      if (error.response && error.response.status === 401) {
+        clearAuthStorage();
+        window.location.href = '/login';
+      }
+      return Promise.reject(error);
+    }
+  );
+});

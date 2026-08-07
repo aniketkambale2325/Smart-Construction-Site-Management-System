@@ -90,13 +90,23 @@ builder.Services.AddHttpClient<EmployeeValidationClient>(client =>
 
 // Register Services
 builder.Services.AddScoped<IProjectService, ProjectService>();
-
 builder.Services.AddScoped<ISiteService, SiteService>();
-
 builder.Services.AddScoped<IDailyReportService, DailyReportService>();
-
 builder.Services.AddScoped<IClientService, ClientService>();
+builder.Services.AddScoped<IMaterialService, MaterialService>();
+builder.Services.AddScoped<IVendorService, VendorService>();
+builder.Services.AddScoped<IExpenseService, ExpenseService>();
+builder.Services.AddScoped<IDashboardService, DashboardService>();
+builder.Services.AddScoped<IPhotoUploadService, PhotoUploadService>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+        policy.WithOrigins("http://localhost:5173")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials());
+});
 
 // Controllers
 builder.Services.AddControllers();
@@ -104,6 +114,7 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
+app.UseCors();
 
 // Authentication and authorization
 app.UseAuthentication();
